@@ -15,9 +15,9 @@ class BizData:
 		try:
 			self.json = json.loads(self.contents);
 		except ValueError, e: 
-			print >>sys.stderr, 'Could not load JSON oboject from body_callback(): %', e
+			print >>sys.stderr, 'Could not load JSON object from body_callback(): %', e
 
-	def get_data(self, url):
+	def get(self, url):
 		c = pycurl.Curl()
 		c.setopt(c.URL, url)
 		c.setopt(c.WRITEFUNCTION, self.body_callback)
@@ -28,7 +28,10 @@ class BizData:
 url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&limit=10'
 
 b = BizData()
-b.get_data(url)
+b.get(url)
 b.decode()
 		
 print b.json
+
+
+
