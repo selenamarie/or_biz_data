@@ -34,13 +34,16 @@ class BizData:
 
 	def get_all(self, url, limit):
 		c = pycurl.Curl()
-		url = url + "limit=%", limit
+		offset = 0
 		# reset contents for each and call decode on each
-		self.contents = ''
 		while self.contents != '[]': 
-			self.get(url)
+			self.contents = ''
+			callurl = url + "limit=" + str(limit) + "&offset=" + str(offset)
+			print callurl
+			self.get(callurl)
 			if self.contents != '[]':
 				self.decode()
+			offset += limit
 
 	def search(self, param):
 		results = []
@@ -56,12 +59,22 @@ class BizData:
 			results.append([business[thing] for thing in params])
 		return results
 
-url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&limit=10'
+	def search_all(self, params):
+		results = []
+		for businesses in self.archive:
+			for business in businesses:
+				try:
+					results.append([business[thing] for thing in params])
+				except: 
+					pass
+		return results
+
+#url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&limit=10'
+url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&'
 
 b = BizData()
-b.get(url)
-b.decode()
+b.get_all(url, 8000)
 
-print b.searches(['name', 'source_url', 'registered_date'])
+print b.search_all(['name', 'source_url', 'registered_date'])
 
 
