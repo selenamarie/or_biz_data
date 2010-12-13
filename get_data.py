@@ -25,15 +25,18 @@ class BizData:
 		c.close()
 
 	def search(self, param):
-		results = self.json
-		for result in results:
-			print result[param]
+		results = []
+		businesses = self.json
+		for business in businesses:
+			 results.append(business[param])
+		return results
 
 	def searches(self, params):
-		results = self.json
-		for result in results:
-			print [result[thing] for thing in params]
-
+		results = []
+		businesses = self.json
+		for business in businesses:
+			results.append([business[thing] for thing in params])
+		return results
 
 url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&limit=10'
 
@@ -43,7 +46,8 @@ b.decode()
 
 #b.search('name')
 
-b.searches(['name', 'source_url'])
+print b.searches(['name', 'source_url', 'registered_date'])
+
 
 
 
