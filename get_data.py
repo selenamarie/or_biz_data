@@ -24,14 +24,28 @@ class BizData:
 		c.perform()
 		c.close()
 
+	def search(self, param):
+		results = self.json
+		for result in results:
+			print result[param]
+
+	def searches(self, params):
+		results = self.json
+		for result in results:
+			print [result[thing] for thing in params]
+
 
 url = 'http://api.scraperwiki.com/api/1.0/datastore/getdata?format=json&name=oregon_business_registry&limit=10'
 
 b = BizData()
 b.get(url)
 b.decode()
-		
-print b.json
+
+#b.search('name')
+
+b.searches(['name', 'source_url'])
+
+
 
 
 
